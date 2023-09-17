@@ -34,5 +34,5 @@ jobs:
         env:
           CC_TEST_REPORTER_ID: ${{ 'cde452049a54003015605127f0ecfc7c2eafb41cb40ef82b19af9b894ad5657e' }}
         with:
-          coverageCommand: make test-coverage
+          coverageCommand: make check-coverage
           debug: true
