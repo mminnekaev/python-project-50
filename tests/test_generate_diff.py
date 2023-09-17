@@ -3,7 +3,7 @@ from gendiff import generate_diff
 
 
 def test_generate_diff():
-    with open('fixtures/correct_answer1') as f:
+    with open('tests/fixtures/correct_answer1') as f:
         correct_answer = f.read()
 
     assert generate_diff(
