@@ -21,3 +21,6 @@ lint:
 
 check:
 	poetry run pytest
+
+check-coverage:
+	poetry run pytest --cov
