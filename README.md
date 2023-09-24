@@ -7,5 +7,5 @@
 
 [![Test Coverage](https://api.codeclimate.com/v1/badges/b1fa8193364795606d7f/test_coverage)](https://codeclimate.com/github/mminnekaev/python-project-50/test_coverage)
 
-Package import:
-https://asciinema.org/a/0sRjBTkPzqFAuI7vLqR9KzGmS
+Demonstration:
+https://asciinema.org/a/BYLURDZGIO289aORvv9KOUclg
