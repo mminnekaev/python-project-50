@@ -1,5 +1,6 @@
 import json
 import yaml
+from ..formatters.stylish import stylish
 
 
 def load_data(file1, file2):
@@ -18,26 +19,47 @@ def load_data(file1, file2):
     return data1, data2
 
 
-def generate_diff(file1, file2):
-    data1, data2 = load_data(file1=file1, file2=file2)
+def make_inner_view(data1, data2):
+    keys = sorted(list(data1.keys() | data2.keys()))
+    res = list()
 
-    keys1 = list(data1.keys())
-    keys1.sort()
-    res = '{\n'
-
-    for key in keys1:
-        if data1.get(key) == data2.get(key):
-            res = res + f'    {key}: {data1.get(key)}\n'
-        elif data2.get(key) is None:
-            res = res + f'  - {key}: {data1.get(key)}\n'
-        else:
-            res = res + f'  - {key}: {data1.get(key)}\n'
-            res = res + f'  + {key}: {data2.get(key)}\n'
-
-    keys2 = [key for key in list(data2.keys()) if key not in keys1]
-    for key in keys2:
-        res = res + f'  + {key}: {data2.get(key)}\n'
-
-    res = res + '}'
-
+    for key in keys:
+        if (key in data1) and (key in data2):
+            if isinstance(data1[key], dict) and isinstance(data2[key], dict):
+                res.append({
+                    'key': key,
+                    'value': make_inner_view(data1[key], data2[key]),
+                    'meta': 'nested'
+                })
+            elif data1[key] != data2[key]:
+                res.append({
+                    'key': key,
+                    'value': (data1[key], data2[key]),
+                    'meta': 'changed'
+                })
+            elif data1.get(key) == data2.get(key):
+                res.append({
+                    'key': key,
+                    'value': data1[key],
+                    'meta': 'no difference'
+                })
+        elif key not in data2:
+            res.append({
+                'key': key,
+                'value': data1[key],
+                'meta': 'removed'
+            })
+        elif key not in data1:
+            res.append({
+                'key': key,
+                'value': data2[key],
+                'meta': 'added'
+            })
     return res
+
+
+def generate_diff(file1, file2, format):
+    data1, data2 = load_data(file1=file1, file2=file2)
+    result_inner_view = make_inner_view(data1, data2)
+    if format == 'stylish':
+        return stylish(result_inner_view)

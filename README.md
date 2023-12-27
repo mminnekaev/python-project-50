@@ -8,4 +8,4 @@
 [![Test Coverage](https://api.codeclimate.com/v1/badges/b1fa8193364795606d7f/test_coverage)](https://codeclimate.com/github/mminnekaev/python-project-50/test_coverage)
 
 Demonstration:
-https://asciinema.org/a/BYLURDZGIO289aORvv9KOUclg
+https://asciinema.org/a/40QGuifzTLIbt3H1BQlUpCgPa
