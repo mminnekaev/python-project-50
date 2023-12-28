@@ -1,8 +1,8 @@
 import json
 import yaml
-from ..formatters.stylish import stylish
-from ..formatters.plain import plain
-from ..formatters.json import get_json
+from gendiff.formatters.stylish import stylish
+from gendiff.formatters.plain import plain
+from gendiff.formatters.json import get_json
 
 
 def load_data(file1, file2):
