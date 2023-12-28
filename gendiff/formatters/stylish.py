@@ -79,4 +79,8 @@ def stylish(data, depth=1):
                                   f'{stylish(value, depth + 1)}'
 
     result = result + get_indent('nested', depth - 1) + '}\n'
-    return result[:-1]  # [:-1] is to remove last \n
+
+    if depth != 1:
+        return result
+    else:
+        return result[:-1]
