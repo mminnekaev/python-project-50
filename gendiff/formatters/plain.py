@@ -1,5 +1,6 @@
 from json import dumps
 
+
 def format_value(value):
     if isinstance(value, bool) or value is None:
         return dumps(value)
@@ -11,7 +12,7 @@ def format_value(value):
         return value
 
 
-def plain(data, node = ''):
+def plain(data, node=''):
     result = ''
     for elem in data:
         key = elem['key']
