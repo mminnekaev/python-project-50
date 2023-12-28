@@ -6,7 +6,7 @@ INDENTS = {
     'removed': '- ',
     'no difference': '  ',
     'nested': '  '
-    }
+}
 
 BASE_INDENT = 4
 
@@ -31,7 +31,7 @@ def format_plain_dict(dictionary, depth=1):
     for key in dictionary:
         if isinstance(dictionary[key], dict):
             result = result + f'{get_indent("nested", depth)}{key}: ' + \
-                     format_plain_dict(dictionary[key], depth + 1)
+                format_plain_dict(dictionary[key], depth + 1)
         else:
             result = result + f'{get_indent("nested", depth)}{key}: ' \
                               f'{replace_dumps(dictionary[key])}\n'
