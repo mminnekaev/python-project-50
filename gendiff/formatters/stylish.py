@@ -78,5 +78,5 @@ def stylish(data, depth=1):
                 result = result + f'{get_indent("nested", depth)}{key}: ' \
                                   f'{stylish(value, depth + 1)}'
 
-    result = result + get_indent('nested', depth - 1) + '}\n'
+    result = result + get_indent('nested', depth - 1) + '}'
     return result
