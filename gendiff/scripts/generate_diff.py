@@ -2,6 +2,7 @@ import json
 import yaml
 from ..formatters.stylish import stylish
 from ..formatters.plain import plain
+from ..formatters.json import get_json
 
 
 def load_data(file1, file2):
@@ -66,3 +67,5 @@ def generate_diff(file1, file2, format='stylish'):
         return stylish(result_inner_view)
     if format == 'plain':
         return plain(result_inner_view)
+    if format == 'json':
+        return get_json(result_inner_view)
