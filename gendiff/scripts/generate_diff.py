@@ -1,6 +1,7 @@
 import json
 import yaml
 from ..formatters.stylish import stylish
+from ..formatters.plain import plain
 
 
 def load_data(file1, file2):
@@ -58,8 +59,10 @@ def make_inner_view(data1, data2):
     return res
 
 
-def generate_diff(file1, file2, format):
+def generate_diff(file1, file2, format='stylish'):
     data1, data2 = load_data(file1=file1, file2=file2)
     result_inner_view = make_inner_view(data1, data2)
     if format == 'stylish':
         return stylish(result_inner_view)
+    if format == 'plain':
+        return plain(result_inner_view)

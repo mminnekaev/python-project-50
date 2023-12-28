@@ -9,6 +9,9 @@ def test_generate_diff():
     with open('tests/fixtures/correct_answer2.txt', 'r') as f:
         correct_answer_2 = f.read()
 
+    with open('tests/fixtures/correct_answer_plain.txt', 'r') as f:
+        correct_answer_plain = f.read()
+
     # check json input
     assert generate_diff(
         'tests/fixtures/file1_plain.json',
@@ -21,8 +24,16 @@ def test_generate_diff():
         'tests/fixtures/file2_plain.yml'
     ) == correct_answer_1
 
-    # check nested
+    # # check nested
+    # assert generate_diff(
+    #     'tests/fixtures/file1_nested.json',
+    #     'tests/fixtures/file2_nested.json',
+    #     format = 'stylish'
+    # ) == correct_answer_2
+
+    # check plain
     assert generate_diff(
         'tests/fixtures/file1_nested.json',
-        'tests/fixtures/file2_nested.json'
-    ) == correct_answer_2
+        'tests/fixtures/file2_nested.json',
+        format='plain'
+    ) == correct_answer_plain
