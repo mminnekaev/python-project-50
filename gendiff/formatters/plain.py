@@ -42,4 +42,7 @@ def plain(data, node=''):
         elif meta == 'nested':
             result = result + plain(value, node=node + key + '.')
 
-    return result
+    if node == '':
+        return result[:-1]
+    else:
+        return result
