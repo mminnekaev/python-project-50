@@ -1,32 +1,19 @@
-import json
-import yaml
 from gendiff.formatters.stylish import stylish
 from gendiff.formatters.plain import plain
 from gendiff.formatters.json import get_json
+from gendiff.parser import load_data
 
 
-def load_data(file1, file2):
-    if file1.split('.')[-1] == 'json':
-        data1 = json.load(open(file1))
-    elif file1.split('.')[-1] in {'yml', 'yaml'}:
-        with open(file1, 'r') as yaml_file1:
-            data1 = yaml.load(yaml_file1, Loader=yaml.FullLoader)
-
-    if file2.split('.')[-1] == 'json':
-        data2 = json.load(open(file2))
-    elif file2.split('.')[-1] in {'yml', 'yaml'}:
-        with open(file2, 'r') as yaml_file2:
-            data2 = yaml.load(yaml_file2, Loader=yaml.FullLoader)
-
-    return data1, data2
-
-
+# flake8: noqa: C901
 def make_inner_view(data1, data2):
-    keys = sorted(list(data1.keys() | data2.keys()))
     res = list()
+    all_keys = sorted(data1.keys() | data2.keys())
+    added_keys = data2.keys() - data1.keys()
+    removed_keys = data1.keys() - data2.keys()
+    remained_keys = set(all_keys) - added_keys - removed_keys
 
-    for key in keys:
-        if (key in data1) and (key in data2):
+    for key in all_keys:
+        if key in remained_keys:
             if isinstance(data1[key], dict) and isinstance(data2[key], dict):
                 res.append({
                     'key': key,
@@ -45,13 +32,13 @@ def make_inner_view(data1, data2):
                     'value': data1[key],
                     'meta': 'no difference'
                 })
-        elif key not in data2:
+        elif key in removed_keys:
             res.append({
                 'key': key,
                 'value': data1[key],
                 'meta': 'removed'
             })
-        elif key not in data1:
+        elif key in added_keys:
             res.append({
                 'key': key,
                 'value': data2[key],
@@ -61,7 +48,8 @@ def make_inner_view(data1, data2):
 
 
 def generate_diff(file1, file2, format='stylish'):
-    data1, data2 = load_data(file1=file1, file2=file2)
+    data1 = load_data(file1)
+    data2 = load_data(file2)
     result_inner_view = make_inner_view(data1, data2)
     if format == 'stylish':
         return stylish(result_inner_view)

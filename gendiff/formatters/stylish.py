@@ -1,6 +1,3 @@
-from json import dumps
-
-
 INDENTS = {
     'added': '+ ',
     'removed': '- ',
@@ -11,9 +8,13 @@ INDENTS = {
 BASE_INDENT = 4
 
 
-def replace_dumps(value):
-    if isinstance(value, bool) or value is None:
-        return dumps(value)
+def replace_values(value):
+    if value is True:
+        return 'true'
+    elif value is False:
+        return 'false'
+    elif value is None:
+        return 'null'
     else:
         return value
 
@@ -34,11 +35,11 @@ def format_plain_dict(dictionary, depth=1):
                 format_plain_dict(dictionary[key], depth + 1)
         else:
             result = result + f'{get_indent("nested", depth)}{key}: ' \
-                              f'{replace_dumps(dictionary[key])}\n'
+                              f'{replace_values(dictionary[key])}\n'
     result = result + get_indent("nested", depth - 1) + '}' + '\n'
     return result
 
-
+# flake8: noqa: C901
 def stylish(data, depth=1):
     result = '{\n'
 
@@ -54,22 +55,22 @@ def stylish(data, depth=1):
             if meta == 'changed' and not isinstance(value[0], dict) \
                     and not isinstance(value[1], dict):
                 result = result + f'{get_indent("removed", depth)}{key}: ' \
-                                  f'{replace_dumps(value[0])}\n'
+                                  f'{replace_values(value[0])}\n'
                 result = result + f'{get_indent("added", depth)}{key}: ' \
-                                  f'{replace_dumps(value[1])}\n'
+                                  f'{replace_values(value[1])}\n'
             if meta == 'changed' and isinstance(value[0], dict):
                 result = result + f'{get_indent("removed", depth)}{key}: ' \
                                   f'{format_plain_dict(value[0], depth + 1)}'
                 result = result + f'{get_indent("added", depth)}{key}: ' \
-                                  f'{replace_dumps(value[1])}\n'
+                                  f'{replace_values(value[1])}\n'
             if meta == 'changed' and isinstance(value[1], dict):
                 result = result + f'{get_indent("removed", depth)}{key}: ' \
-                                  f'{replace_dumps(value[0])}\n'
+                                  f'{replace_values(value[0])}\n'
                 result = result + f'{get_indent("added", depth)}{key}: ' \
                                   f'{format_plain_dict(value[1], depth + 1)}'
             elif meta in ('added', 'removed', 'no difference'):
                 result = result + f'{get_indent(meta, depth)}{key}: ' \
-                                  f'{replace_dumps(value)}\n'
+                                  f'{replace_values(value)}\n'
         elif isinstance(value, dict):
             if meta in ('added', 'removed', 'no difference'):
                 result = result + f'{get_indent(meta, depth)}{key}: ' \

@@ -11,7 +11,7 @@ def format_value(value):
     else:
         return value
 
-
+# flake8: noqa: C901
 def plain(data, node=''):
     result = ''
     for elem in data:

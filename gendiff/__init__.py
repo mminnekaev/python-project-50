@@ -4,4 +4,4 @@ from .formatters.stylish import stylish
 from .formatters.plain import plain
 from .formatters.json import get_json
 
-__all__ = ['generate_diff', 'parse_args', 'stylish', 'plain', 'get_json']
+__all__ = ['generate_diff']
