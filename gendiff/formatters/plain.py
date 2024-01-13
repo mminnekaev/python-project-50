@@ -11,7 +11,7 @@ def format_value(value):
     else:
         return value
 
-# flake8: noqa: C901
+
 def plain(data, node=''):
     result = ''
     for elem in data:
@@ -19,27 +19,31 @@ def plain(data, node=''):
         value = format_value(elem['value'])
         meta = elem['meta']
 
+        if meta == 'added' and isinstance(value, dict):
+            result = result + f"Property '{node}{key}' was added " \
+                              f"with value: [complex value]\n"
+            continue
         if meta == 'added':
-            if isinstance(value, dict):
-                result = result + f"Property '{node}{key}' was added " \
-                                  f"with value: [complex value]\n"
-            else:
-                result = result + f"Property '{node}{key}' was added " \
-                                  f"with value: {value}\n"
-        elif meta == 'removed':
+            result = result + f"Property '{node}{key}' was added " \
+                              f"with value: {value}\n"
+            continue
+        if meta == 'removed':
             result = result + f"Property '{node}{key}' was removed\n"
-        elif meta == 'changed':
-            if not isinstance(value[0], dict) \
-                    and not isinstance(value[1], dict):
-                result = result + f"Property '{node}{key}' was updated. " \
-                                  f"From {value[0]} to {value[1]}\n"
-            elif isinstance(value[0], dict):
-                result = result + f"Property '{node}{key}' was updated. " \
-                                  f"From [complex value] to {value[1]}\n"
-            elif isinstance(value[1], dict):
-                result = result + f"Property '{node}{key}' was updated. " \
-                                  f"From {value[0]} to [complex value]\n"
-        elif meta == 'nested':
+            continue
+        if meta == 'changed' and not isinstance(value[0], dict) \
+            and not isinstance(value[1], dict):
+            result = result + f"Property '{node}{key}' was updated. " \
+                              f"From {value[0]} to {value[1]}\n"
+            continue
+        if meta == 'changed' and isinstance(value[0], dict):
+            result = result + f"Property '{node}{key}' was updated. " \
+                              f"From [complex value] to {value[1]}\n"
+            continue
+        if meta == 'changed' and isinstance(value[1], dict):
+            result = result + f"Property '{node}{key}' was updated. " \
+                              f"From {value[0]} to [complex value]\n"
+            continue
+        if meta == 'nested':
             result = result + plain(value, node=node + key + '.')
 
     if node == '':

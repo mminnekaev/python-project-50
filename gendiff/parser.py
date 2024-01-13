@@ -2,10 +2,16 @@ import json
 import yaml
 
 
-def load_data(file):
-    if file.split('.')[-1] == 'json':
-        data = json.load(open(file))
-    elif file.split('.')[-1] in {'yml', 'yaml'}:
-        with open(file, 'r') as yaml_file:
-            data = yaml.load(yaml_file, Loader=yaml.FullLoader)
-    return data
+def parse(data, format):
+    if format in {'yml', 'yaml'}:
+        return yaml.load(data, Loader=yaml.FullLoader)
+    elif format == 'json':
+        return json.loads(data)
+    raise ValueError("This data format is not supported")
+
+
+def load_data(path):
+    format = path.split('.')[-1]
+    with open(path) as f:
+        data = f.read()
+    return parse(data, format)
