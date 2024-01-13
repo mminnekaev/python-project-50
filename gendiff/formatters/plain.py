@@ -31,7 +31,7 @@ def plain(data, node=''):
             result = result + f"Property '{node}{key}' was removed\n"
             continue
         if meta == 'changed' and not isinstance(value[0], dict) \
-            and not isinstance(value[1], dict):
+                and not isinstance(value[1], dict):
             result = result + f"Property '{node}{key}' was updated. " \
                               f"From {value[0]} to {value[1]}\n"
             continue
