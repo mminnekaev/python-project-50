@@ -19,5 +19,17 @@ install poetry
 make install
 ```
 
+### Usage examples:
+```
+# Help on the utility
+gendiff help
+
+# Make diff of two files in default format
+gendiff file1 file2
+
+# Make diff of two files in default format
+gendiff file1 file2 --format [plain/json/stylish]
+```
+
 ### Demonstration:
 <a href=https://asciinema.org/a/SBREcOTQILx6m0Bz46887swwM><img src="https://asciinema.org/a/SBREcOTQILx6m0Bz46887swwM.svg"></a>

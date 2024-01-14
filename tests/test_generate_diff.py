@@ -1,31 +1,36 @@
 import pytest
 from gendiff import generate_diff
 
+FIXTURES_DIR = 'tests/fixtures/'
 
 @pytest.mark.parametrize(
     "file1, file2, format, correct_result", [
         (
-            'tests/fixtures/file1_plain.json',
-            'tests/fixtures/file2_plain.json',
+            'file1_plain.json',
+            'file2_plain.json',
             'stylish',
-            'tests/fixtures/correct_answer1.txt'
+            'correct_answer1.txt'
         ),
         (
-            'tests/fixtures/file1_plain.yml',
-            'tests/fixtures/file2_plain.yml',
+            'file1_plain.yml',
+            'file2_plain.yml',
             'stylish',
-            'tests/fixtures/correct_answer1.txt'
+            'correct_answer1.txt'
         ),
         (
-            'tests/fixtures/file1_nested.json',
-            'tests/fixtures/file2_nested.json',
+            'file1_nested.json',
+            'file2_nested.json',
             'plain',
-            'tests/fixtures/correct_answer_plain.txt'
+            'correct_answer_plain.txt'
         )
     ]
 )
 def test_generate_diff(file1, file2, format, correct_result):
-    with open(correct_result) as f:
+    with open(FIXTURES_DIR + correct_result) as f:
         result = f.read()
-        diff = generate_diff(file1, file2, format=format)
+        diff = generate_diff(
+            FIXTURES_DIR + file1,
+            FIXTURES_DIR + file2,
+            format=format
+        )
         assert result == diff

@@ -1,5 +1,5 @@
-from gendiff.formatters.get_format import get_format
-from gendiff.parser import load_data
+from gendiff.formatters.apply_format import apply_format
+from gendiff.parser import get_data
 
 
 def make_inner_view(data1, data2):
@@ -37,19 +37,17 @@ def make_inner_view(data1, data2):
                 'meta': 'changed'
             })
             continue
-        if data1.get(key) == data2.get(key):
-            res.append({
-                'key': key,
-                'value': data1[key],
-                'meta': 'no difference'
-            })
+        res.append({
+            'key': key,
+            'value': data1[key],
+            'meta': 'no difference'
+        })
     return res
 
 
 def generate_diff(file1, file2, format='stylish'):
-    data1 = load_data(file1)
-    data2 = load_data(file2)
+    data1 = get_data(file1)
+    data2 = get_data(file2)
     result_inner_view = make_inner_view(data1, data2)
-    formatter = get_format(format)
-    result = formatter(result_inner_view)
+    result = apply_format(result_inner_view, format)
     return result

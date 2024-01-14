@@ -3,11 +3,11 @@ from gendiff.formatters.plain import plain
 from gendiff.formatters.json import get_json
 
 
-def get_format(format):
+def apply_format(content, format):
     if format == 'stylish':
-        return stylish
+        return stylish(content)
     if format == 'plain':
-        return plain
+        return plain(content)
     if format == 'json':
-        return get_json
+        return get_json(content)
     raise ValueError('This format is not supported')
