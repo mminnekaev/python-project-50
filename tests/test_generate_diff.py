@@ -1,7 +1,9 @@
 import pytest
 from gendiff import generate_diff
 
+
 FIXTURES_DIR = 'tests/fixtures/'
+
 
 @pytest.mark.parametrize(
     "file1, file2, format, correct_result", [
