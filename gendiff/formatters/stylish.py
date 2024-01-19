@@ -16,35 +16,24 @@ def get_indent(meta, depth, symb=' '):
     return indent
 
 
-def replace_values(value):
-    if value is True:
-        return 'true'
-    elif value is False:
-        return 'false'
+def format_values(value, depth=1):
+    if isinstance(value, dict):
+        result = ['{']
+        for key in value:
+            if isinstance(value[key], dict):
+                result.append(f'{get_indent("nested", depth)}{key}: '
+                              f'{format_values(value[key], depth + 1)}')
+            else:
+                result.append(f'{get_indent("nested", depth)}{key}: '
+                              f'{format_values(value[key])}')
+        result.append(get_indent("nested", depth - 1) + '}')
+        return '\n'.join(result)
+    elif isinstance(value, bool):
+        return str(value).lower()
     elif value is None:
         return 'null'
     else:
         return value
-
-
-def format_plain_dict(dictionary, depth=1):
-    result = ['{']
-    for key in dictionary:
-        if isinstance(dictionary[key], dict):
-            result.append(f'{get_indent("nested", depth)}{key}: '
-                          f'{format_plain_dict(dictionary[key], depth + 1)}')
-        else:
-            result.append(f'{get_indent("nested", depth)}{key}: '
-                          f'{replace_values(dictionary[key])}')
-    result.append(get_indent("nested", depth - 1) + '}')
-    return '\n'.join(result)
-
-
-def format_values(value, depth=1):
-    if isinstance(value, dict):
-        return format_plain_dict(value, depth)
-    else:
-        return replace_values(value)
 
 
 def stylish(data, depth=1):

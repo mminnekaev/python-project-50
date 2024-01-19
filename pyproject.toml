@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "hexlet-code"
 version = "0.1.0"
-description = "Hexlet 2nd project"
+description = "Util generating difference of two config files"
 authors = ["Marat Minnekaev"]
 readme = "README.md"
 packages = [
